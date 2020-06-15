@@ -13,6 +13,24 @@ using namespace il2cpp_utils;
 
 static const Logger* logger;
 
+struct SaberVelocity {
+    Vector3 pos;
+    Vector3 rot;
+};
+
+Vector3 getVelocity(Vector3 a, Vector3 b) {
+    Vector3 newVector;
+    newVector.x = a.x - b.x;
+    newVector.y = a.y - b.y;
+    newVector.z = a.z - b.z;
+    return newVector;
+}
+
+SaberVelocity rightVelocity;
+SaberVelocity leftVelocity;
+
+bool thrown = false;
+
 float Spin1 = 0.0f;
 float Speed = 5.0f;
 
