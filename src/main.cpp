@@ -83,6 +83,13 @@ MAKE_HOOK_OFFSETLESS(PlayerController_Update, void, Il2CppObject* self) {
     Spin1 += Speed;
 }
 
+MAKE_HOOK_OFFSETLESS(HandleNoteWasCut, void, Il2CppObject* self, Il2CppObject* noteSpawnController, Il2CppObject* noteController, Il2CppObject* noteCutInfo) {
+    if(!Spinning && !thrown)
+    {
+        HandleNoteWasCut(self, noteSpawnController, noteController, noteController);
+    }
+}
+
 extern "C" void setup(ModInfo& info) {
     info.id = "Tricksaber";
     info.version = "0.0.0.0.0.0.0.0.0.0.1";
@@ -95,4 +102,5 @@ extern "C" void setup(ModInfo& info) {
 extern "C"
 void load() {
     INSTALL_HOOK_OFFSETLESS(PlayerController_Update, FindMethodUnsafe("", "PlayerController", "Update", 0));
+    INSTALL_HOOK_OFFSETLESS(HandleNoteWasCut, FindMethodUnsafe("", "ScoreController", "HandleNoteWasCutEvent", 3));
 }
