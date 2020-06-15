@@ -33,16 +33,21 @@ SaberTransform prevRightSaber;
 SaberTransform currentLeftSaber;
 SaberTransform prevLeftSaber;
 
+Vector3 ThrowMultiplier = {1, 1, 1};
+
 bool thrown = false;
 
 float Spin1 = 0.0f;
 float Speed = 5.0f;
+bool Spinning = true;
 
 MAKE_HOOK_OFFSETLESS(PlayerController_Update, void, Il2CppObject* self) {
-
-    
-
     PlayerController_Update(self);
+    if(!Spinning)
+    {
+        Spin1 = 0;
+        return;
+    }
 
     Il2CppObject* leftSaber = *il2cpp_utils::GetFieldValue(self, "_leftSaber");
     Il2CppObject* rightSaber = *il2cpp_utils::GetFieldValue(self, "_rightSaber");
