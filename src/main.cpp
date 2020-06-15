@@ -13,7 +13,7 @@ using namespace il2cpp_utils;
 
 static const Logger* logger;
 
-struct SaberVelocity {
+struct SaberTransform {
     Vector3 pos;
     Vector3 rot;
 };
@@ -26,15 +26,29 @@ Vector3 getVelocity(Vector3 a, Vector3 b) {
     return newVector;
 }
 
-SaberVelocity rightVelocity;
-SaberVelocity leftVelocity;
+SaberTransform rightVelocity;
+SaberTransform leftVelocity;
+SaberTransform currentRightSaber;
+SaberTransform prevRightSaber;
+SaberTransform currentLeftSaber;
+SaberTransform prevLeftSaber;
+
+Vector3 ThrowMultiplier = {1, 1, 1};
 
 bool thrown = false;
 
 float Spin1 = 0.0f;
 float Speed = 5.0f;
+bool Spinning = true;
 
 MAKE_HOOK_OFFSETLESS(PlayerController_Update, void, Il2CppObject* self) {
+    PlayerController_Update(self);
+    if(!Spinning)
+    {
+        Spin1 = 0;
+        return;
+    }
+
     Il2CppObject* leftSaber = *il2cpp_utils::GetFieldValue(self, "_leftSaber");
     Il2CppObject* rightSaber = *il2cpp_utils::GetFieldValue(self, "_rightSaber");
 
@@ -69,6 +83,13 @@ MAKE_HOOK_OFFSETLESS(PlayerController_Update, void, Il2CppObject* self) {
     Spin1 += Speed;
 }
 
+MAKE_HOOK_OFFSETLESS(HandleNoteWasCut, void, Il2CppObject* self, Il2CppObject* noteSpawnController, Il2CppObject* noteController, Il2CppObject* noteCutInfo) {
+    if(!Spinning && !thrown)
+    {
+        HandleNoteWasCut(self, noteSpawnController, noteController, noteController);
+    }
+}
+
 extern "C" void setup(ModInfo& info) {
     info.id = "Tricksaber";
     info.version = "0.0.0.0.0.0.0.0.0.0.1";
@@ -81,4 +102,5 @@ extern "C" void setup(ModInfo& info) {
 extern "C"
 void load() {
     INSTALL_HOOK_OFFSETLESS(PlayerController_Update, FindMethodUnsafe("", "PlayerController", "Update", 0));
+    INSTALL_HOOK_OFFSETLESS(HandleNoteWasCut, FindMethodUnsafe("", "ScoreController", "HandleNoteWasCutEvent", 3));
 }

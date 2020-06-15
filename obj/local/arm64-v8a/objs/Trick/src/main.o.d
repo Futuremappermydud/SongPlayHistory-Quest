@@ -1,5 +1,5 @@
-D:\TrickSaberQuest/obj/local/arm64-v8a/objs/Trick/src/main.o: \
-  D:\TrickSaberQuest\src\main.cpp \
+D:\TrickSaber-Quest/obj/local/arm64-v8a/objs/Trick/src/main.o: \
+  D:\TrickSaber-Quest\src\main.cpp \
   src\..\extern\beatsaber-hook\shared\utils\il2cpp-functions.hpp \
   C:\android-ndk-r20b\build\\..\sources\cxx-stl\llvm-libc++\include\cstddef \
   C:\android-ndk-r20b\build\\..\sources\cxx-stl\llvm-libc++\include\__config \
