@@ -13,10 +13,37 @@ using namespace il2cpp_utils;
 
 static const Logger* logger;
 
+struct SaberTransform {
+    Vector3 pos;
+    Vector3 rot;
+};
+
+Vector3 getVelocity(Vector3 a, Vector3 b) {
+    Vector3 newVector;
+    newVector.x = a.x - b.x;
+    newVector.y = a.y - b.y;
+    newVector.z = a.z - b.z;
+    return newVector;
+}
+
+SaberTransform rightVelocity;
+SaberTransform leftVelocity;
+SaberTransform currentRightSaber;
+SaberTransform prevRightSaber;
+SaberTransform currentLeftSaber;
+SaberTransform prevLeftSaber;
+
+bool thrown = false;
+
 float Spin1 = 0.0f;
 float Speed = 5.0f;
 
 MAKE_HOOK_OFFSETLESS(PlayerController_Update, void, Il2CppObject* self) {
+
+    
+
+    PlayerController_Update(self);
+
     Il2CppObject* leftSaber = *il2cpp_utils::GetFieldValue(self, "_leftSaber");
     Il2CppObject* rightSaber = *il2cpp_utils::GetFieldValue(self, "_rightSaber");
 
