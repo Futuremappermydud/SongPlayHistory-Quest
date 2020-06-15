@@ -18,6 +18,11 @@ struct SaberTransform {
     Vector3 rot;
 };
 
+/*
+LeftHand = 4
+RightHand = 5
+*/
+
 Vector3 getVelocity(Vector3 a, Vector3 b) {
     Vector3 newVector;
     newVector.x = a.x - b.x;
@@ -37,15 +42,26 @@ Vector3 ThrowMultiplier = {1, 1, 1};
 
 bool thrown = false;
 
-float Spin1 = 0.0f;
+float LeftSpin = 0.0f;
+float RightSpin = 0.0f;
 float Speed = 5.0f;
-bool Spinning = true;
+bool LeftSpinning = true;
+bool RightSpinning = true;
+
+float LeftThumbstickVal;
+float RightThumbstickVal;
 
 MAKE_HOOK_OFFSETLESS(PlayerController_Update, void, Il2CppObject* self) {
     PlayerController_Update(self);
-    if(!Spinning)
+
+    if(!LeftSpinning)
     {
-        Spin1 = 0;
+        LeftSpin = 0;
+        return;
+    }
+    if(!RightSpinning)
+    {
+        RightSpin = 0;
         return;
     }
 
@@ -76,18 +92,62 @@ MAKE_HOOK_OFFSETLESS(PlayerController_Update, void, Il2CppObject* self) {
                 Quaternion rightSaberLocalRotation;
             rightSaberLocalRotation = *il2cpp_utils::RunMethod<Quaternion>(rightSaberTransform, getLocalRotation);
 
-            il2cpp_utils::RunMethod(leftSaberTransform, setRotate, Vector3{ 0, Spin1, 0});
-            il2cpp_utils::RunMethod(rightSaberTransform, setRotate, Vector3{ 0, Spin1, 0});
+            il2cpp_utils::RunMethod(leftSaberTransform, setRotate, Vector3{ 0, LeftSpin, 0});
+            il2cpp_utils::RunMethod(rightSaberTransform, setRotate, Vector3{ 0, RightSpin, 0});
         }
     }
-    Spin1 += Speed;
+    //Spinning = LeftThumbstickVal > 0.08f;
+    LeftSpin += Speed;
+}
+bool IsCurrentSaberSpinning;
+MAKE_HOOK_OFFSETLESS(HandleNoteWasCut, void, Il2CppObject* self, Il2CppObject* noteController, Il2CppObject* noteCutInfo) {
+    int SaberType = *GetPropertyValue<int>(noteCutInfo, "saberType");
+    if(SaberType == 0)
+    {
+        IsCurrentSaberSpinning = LeftSpinning;
+    }
+    if(SaberType == 1)
+    {
+        IsCurrentSaberSpinning = RightSpinning;
+    }
+    
+    if(!IsCurrentSaberSpinning)
+    {
+        HandleNoteWasCut(self, noteController, noteController);
+    }
 }
 
-MAKE_HOOK_OFFSETLESS(HandleNoteWasCut, void, Il2CppObject* self, Il2CppObject* noteSpawnController, Il2CppObject* noteController, Il2CppObject* noteCutInfo) {
-    if(!Spinning && !thrown)
-    {
-        HandleNoteWasCut(self, noteSpawnController, noteController, noteController);
+static bool isInMenu = false;
+#define WAIT_TIME 175
+static long long LastLeftThumbstickVertical = 0;
+static long long LastRightThumbstickVertical = 0;
+
+MAKE_HOOK_OFFSETLESS(VRPlatformHelper_Update, void, Il2CppObject* self) {
+    VRPlatformHelper_Update(self);
+    if (!isInMenu) return;
+
+    long long currentTime = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();;
+    float LeftthumbstickVertical = il2cpp_utils::RunMethod<float>("UnityEngine", "Input", "GetAxis", il2cpp_utils::createcsstr("VerticalRightHand")).value_or(0);
+    float RightthumbstickVertical = il2cpp_utils::RunMethod<float>("UnityEngine", "Input", "GetAxis", il2cpp_utils::createcsstr("VerticalLeftHand")).value_or(0);
+
+
+    if (RightthumbstickVertical < -0.5f && currentTime-LastRightThumbstickVertical > WAIT_TIME) {
+        LastRightThumbstickVertical = currentTime;
+        RightThumbstickVal = RightthumbstickVertical;
     }
+    else
+    {
+        RightThumbstickVal = 0;
+    }
+    if (LeftthumbstickVertical < 0.5f && currentTime-LastLeftThumbstickVertical > WAIT_TIME) {
+        LastLeftThumbstickVertical = currentTime;
+        LeftThumbstickVal = LeftthumbstickVertical;
+    }
+    else
+    {
+        LeftThumbstickVal = 0;
+    }
+    
 }
 
 extern "C" void setup(ModInfo& info) {
@@ -102,5 +162,6 @@ extern "C" void setup(ModInfo& info) {
 extern "C"
 void load() {
     INSTALL_HOOK_OFFSETLESS(PlayerController_Update, FindMethodUnsafe("", "PlayerController", "Update", 0));
-    INSTALL_HOOK_OFFSETLESS(HandleNoteWasCut, FindMethodUnsafe("", "ScoreController", "HandleNoteWasCutEvent", 3));
+    INSTALL_HOOK_OFFSETLESS(HandleNoteWasCut, FindMethodUnsafe("", "BeatmapObjectManager", "HandleNoteWasCut", 2));
+    //INSTALL_HOOK_OFFSETLESS(VRPlatformHelper_Update, il2cpp_utils::FindMethod("", "VRPlatformHelper", "Update"));
 }
