@@ -1,6 +1,6 @@
 {
-    "id": "Tricksaber_V2",
-    "name": "Tricksabert",
+    "id": "songplayHistory",
+    "name": "Song Play History",
     "author": "Henwill8 and Futuremappermydud",
     "description": [
         
@@ -13,10 +13,10 @@
         {
             "type": "HookMod",
             "installAction": {
-                "installLibraryFile": "libTrick.so"
+                "installLibraryFile": "libsongplayHistory.so"
             },
             "uninstallAction": {
-                "removeLibraryFile": "libTrick.so"
+                "removeLibraryFile": "libsongplayHistory.so"
             }
         },
         {

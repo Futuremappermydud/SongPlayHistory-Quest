@@ -27,7 +27,7 @@ LOCAL_SHARED_LIBRARIES := modloader
 LOCAL_SHARED_LIBRARIES += beatsaber-hook
 LOCAL_LDLIBS     := -llog
 LOCAL_CFLAGS     := -I'c:/Program Files/Unity/Hub/Editor/2019.3.1f1/Editor/Data/il2cpp/libil2cpp'
-LOCAL_MODULE     := Trick
+LOCAL_MODULE     := songplayHistory
 LOCAL_CPPFLAGS   := -std=c++2a
 LOCAL_C_INCLUDES := ./include ./src
 LOCAL_SRC_FILES  += $(call rwildcard,src/,*.cpp) ./extern/beatsaber-hook/src/inline-hook/And64InlineHook.cpp
