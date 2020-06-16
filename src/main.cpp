@@ -13,9 +13,10 @@ using namespace il2cpp_utils;
 
 static const Logger* logger;
 
-MAKE_HOOK_OFFSETLESS(VRPlatformHelper_Update, void, Il2CppObject* self) {
-    VRPlatformHelper_Update(self);
-
+MAKE_HOOK_OFFSETLESS(StandardLevelDetailView_RefreshContent, void, Il2CppObject* self) {
+    StandardLevelDetailView_RefreshContent(self);
+    bool ShowPlayerStats = *GetFieldValue<bool>(self, "_showPlayerStats");
+    if(!ShowPlayerStats) return;
 }
 
 extern "C" void setup(ModInfo& info) {
@@ -29,5 +30,5 @@ extern "C" void setup(ModInfo& info) {
 
 extern "C"
 void load() {
-    INSTALL_HOOK_OFFSETLESS(VRPlatformHelper_Update, il2cpp_utils::FindMethod("", "VRPlatformHelper", "Update"));
+    INSTALL_HOOK_OFFSETLESS(StandardLevelDetailView_RefreshContent, il2cpp_utils::FindMethod("", "StandardLevelDetailView", "RefreshContent"));
 }

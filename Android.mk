@@ -21,10 +21,19 @@ LOCAL_SRC_FILES         := ./libbeatsaber-hook_2019_2_1f1_0_1_2.so
 LOCAL_EXPORT_C_INCLUDES := ./extern/beatsaber-hook/shared/
 include $(PREBUILT_SHARED_LIBRARY)
 
+# Build the CustomUI shared library
+include $(CLEAR_VARS)
+LOCAL_MODULE	        := CustomUI
+LOCAL_SRC_FILES         := ./libcustomui-Idfkwhatversion.so
+LOCAL_EXPORT_C_INCLUDES := ./extern/BeatSaberQuestCustomUI-master/shared
+include $(PREBUILT_SHARED_LIBRARY)
+
+
 include $(CLEAR_VARS)
 # Include the two libraries
 LOCAL_SHARED_LIBRARIES := modloader
 LOCAL_SHARED_LIBRARIES += beatsaber-hook
+LOCAL_SHARED_LIBRARIES += CustomUI
 LOCAL_LDLIBS     := -llog
 LOCAL_CFLAGS     := -I'c:/Program Files/Unity/Hub/Editor/2019.3.1f1/Editor/Data/il2cpp/libil2cpp'
 LOCAL_MODULE     := songplayHistory
