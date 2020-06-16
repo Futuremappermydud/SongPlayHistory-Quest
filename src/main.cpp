@@ -38,20 +38,26 @@ MAKE_HOOK_OFFSETLESS(StandardLevelDetailView_RefreshContent, void, Il2CppObject*
     Il2CppObject* playerLevelStatsData = *RunMethod(PlayerData, "GetPlayerLevelStatsData", LevelID, Difficulty, beatmapCharacteristic);
     int Plays = *GetPropertyValue<int>(playerLevelStatsData, "playCount");
     Il2CppObject* StatsContainer = *GetFieldValue(self, "_playerStatsContainer");
-    Array<Il2CppObject*>* RectTransforms = *RunMethod<Array<Il2CppObject*>*>(StatsContainer, "GetComponentsInChildren", GetSystemType("UnityEngine", "RectTransform"));
+    //return;
+    
+    Array<Il2CppObject*>* RectTransforms = *RunMethod<Array<Il2CppObject*>*>(StatsContainer, "GetComponentsInChildren", GetClassFromName("UnityEngine", "RectTransform"));
+    //return;
+    
+    //if(RectTransforms == nullptr) return;
+
     for (int i = 0; i > RectTransforms->Length(); i++)
     {
-        Il2CppString* Name = *GetPropertyValue<Il2CppString*>(RectTransforms[i], "name");
-        std::string Converted = to_utf8(csstrtostr(Name));
+        //Il2CppString* Name = *GetPropertyValue<Il2CppString*>(RectTransforms->values[i], "name");
+        std::string Converted = "MaxCombo";//to_utf8(csstrtostr(Name));
         if(Converted == "MaxCombo") _maxCombo = RectTransforms->values[i];
-        if(Converted == "Highscore") _highScore = RectTransforms->values[i];
-        if(Converted == "MaxRank") _maxRank = RectTransforms->values[i];
+        //if(Converted == "Highscore") _highScore = RectTransforms->values[i];
+        //if(Converted == "MaxRank") _maxRank = RectTransforms->values[i];
     }
-    
-    RunMethod(_maxCombo, "SetInsetAndSizeFromParentEdge", 0, -2.0f, 17.0f);
-    RunMethod(_highScore, "SetInsetAndSizeFromParentEdge", 0, 15.0f, 17.0f);
-    RunMethod(_maxRank, "SetInsetAndSizeFromParentEdge", 0, 32.0f, 16.0f);
-    RunMethod(_playCount, "SetInsetAndSizeFromParentEdge", 0, 48.0f, 16.0f);
+
+    //RunMethod(_maxCombo, "SetInsetAndSizeFromParentEdge", 0, -2.0f, 17.0f);
+    //RunMethod(_highScore, "SetInsetAndSizeFromParentEdge", 0, 15.0f, 17.0f);
+    //RunMethod(_maxRank, "SetInsetAndSizeFromParentEdge", 0, 32.0f, 16.0f);
+    //RunMethod(_playCount, "SetInsetAndSizeFromParentEdge", 0, 48.0f, 16.0f);
 }
 
 extern "C" void setup(ModInfo& info) {
