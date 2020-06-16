@@ -16,6 +16,11 @@ static const Logger* logger;
 
 Il2CppObject* _playCount;
 
+//TODO: Actually set these to not be null
+Il2CppObject* _maxCombo;
+Il2CppObject* _highScore;
+Il2CppObject* _maxRank;
+
 MAKE_HOOK_OFFSETLESS(StandardLevelDetailView_RefreshContent, void, Il2CppObject* self) {
     StandardLevelDetailView_RefreshContent(self);
     bool ShowPlayerStats = *GetFieldValue<bool>(self, "_showPlayerStats");
@@ -34,7 +39,17 @@ MAKE_HOOK_OFFSETLESS(StandardLevelDetailView_RefreshContent, void, Il2CppObject*
     int Plays = *GetPropertyValue<int>(playerLevelStatsData, "playCount");
     //StandardLevelDetail_Transform
     Il2CppObject* StandardLevelDetailView_Transform = *GetPropertyValue(self, "transform");
-    
+
+
+
+
+
+
+
+    RunMethod(_maxCombo, "SetInsetAndSizeFromParentEdge", 0, -2.0f, 17.0f);
+    RunMethod(_highScore, "SetInsetAndSizeFromParentEdge", 0, 15.0f, 17.0f);
+    RunMethod(_maxRank, "SetInsetAndSizeFromParentEdge", 0, 32.0f, 16.0f);
+    RunMethod(_playCount, "SetInsetAndSizeFromParentEdge", 0, 48.0f, 16.0f);
 }
 
 extern "C" void setup(ModInfo& info) {
