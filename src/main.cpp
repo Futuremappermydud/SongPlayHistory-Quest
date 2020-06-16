@@ -38,25 +38,20 @@ MAKE_HOOK_OFFSETLESS(StandardLevelDetailView_RefreshContent, void, Il2CppObject*
     Il2CppObject* playerLevelStatsData = *RunMethod(PlayerData, "GetPlayerLevelStatsData", LevelID, Difficulty, beatmapCharacteristic);
     int Plays = *GetPropertyValue<int>(playerLevelStatsData, "playCount");
     Il2CppObject* StatsContainer = *GetFieldValue(self, "_playerStatsContainer");
-    //return;
-    
-    Array<Il2CppObject*>* RectTransforms = *RunMethod<Array<Il2CppObject*>*>(StatsContainer, "GetComponentsInChildren", GetClassFromName("UnityEngine", "RectTransform"));
-    //return;
-    
-    //if(RectTransforms == nullptr) return;
+    auto MaxRankValueText = *GetFieldValue(self, "_maxRankText");
+    auto HighScoreValueText = *GetFieldValue(self, "_highScoreText");
+    auto MaxComboValueText = *GetFieldValue(self, "_maxComboText");
 
-    for (int i = 0; i > RectTransforms->Length(); i++)
-    {
-        //Il2CppString* Name = *GetPropertyValue<Il2CppString*>(RectTransforms->values[i], "name");
-        std::string Converted = "MaxCombo";//to_utf8(csstrtostr(Name));
-        if(Converted == "MaxCombo") _maxCombo = RectTransforms->values[i];
-        //if(Converted == "Highscore") _highScore = RectTransforms->values[i];
-        //if(Converted == "MaxRank") _maxRank = RectTransforms->values[i];
-    }
+    auto MaxRankGameObj = *GetPropertyValue(MaxRankValueText, "gameObject");
+    auto HighScoreGameObj = *GetPropertyValue(HighScoreValueText, "gameObject");
+    auto MaxComboGameObj = *GetPropertyValue(MaxComboValueText, "gameObject");
+    _maxRank = *RunMethod(MaxRankGameObj, "GetComponent", createcsstr("RectTransform"));
+    _maxCombo = *RunMethod(MaxComboGameObj, "GetComponent", createcsstr("RectTransform"));
+    _highScore = *RunMethod(HighScoreGameObj, "GetComponent", createcsstr("RectTransform"));
 
-    //RunMethod(_maxCombo, "SetInsetAndSizeFromParentEdge", 0, -2.0f, 17.0f);
-    //RunMethod(_highScore, "SetInsetAndSizeFromParentEdge", 0, 15.0f, 17.0f);
-    //RunMethod(_maxRank, "SetInsetAndSizeFromParentEdge", 0, 32.0f, 16.0f);
+    RunMethod(_maxCombo, "SetInsetAndSizeFromParentEdge", 0, -2.0f, 17.0f);
+    RunMethod(_highScore, "SetInsetAndSizeFromParentEdge", 0, 15.0f, 17.0f);
+    RunMethod(_maxRank, "SetInsetAndSizeFromParentEdge", 0, 32.0f, 16.0f);
     //RunMethod(_playCount, "SetInsetAndSizeFromParentEdge", 0, 48.0f, 16.0f);
 }
 
