@@ -42,18 +42,23 @@ MAKE_HOOK_OFFSETLESS(StandardLevelDetailView_RefreshContent, void, Il2CppObject*
     auto HighScoreValueText = *GetFieldValue(self, "_highScoreText");
     auto MaxComboValueText = *GetFieldValue(self, "_maxComboText");
 
-    auto MaxRankGameObj = *GetPropertyValue(MaxRankValueText, "gameObject");
-    auto HighScoreGameObj = *GetPropertyValue(HighScoreValueText, "gameObject");
-    auto MaxComboGameObj = *GetPropertyValue(MaxComboValueText, "gameObject");
-    _maxRank = *RunMethod(MaxRankGameObj, "GetComponent", createcsstr("RectTransform"));
-    _maxCombo = *RunMethod(MaxComboGameObj, "GetComponent", createcsstr("RectTransform"));
-    _highScore = *RunMethod(HighScoreGameObj, "GetComponent", createcsstr("RectTransform"));
+    auto MaxRankValueTransform = *GetPropertyValue(MaxRankValueText, "transform");
+    auto HighScoreValueTransform = *GetPropertyValue(HighScoreValueText, "transform");
+    auto MaxComboValueTransform = *GetPropertyValue(MaxComboValueText, "transform");
+
+    auto MaxRankValueTextParent = *GetFieldValue(MaxRankValueTransform, "parent");
+    auto HighScoreValueTextParent = *GetFieldValue(HighScoreValueTransform, "parent");
+    auto MaxComboValueTextParent = *GetFieldValue(MaxComboValueTransform, "parent");
+
+    _maxRank = *RunMethod(MaxRankValueTextParent, "GetComponent", GetSystemType("UnityEngine", "RectTransform"));
+    _maxCombo = *RunMethod(MaxComboValueTextParent, "GetComponent", GetSystemType("UnityEngine", "RectTransform"));
+    _highScore = *RunMethod(HighScoreValueTextParent, "GetComponent", GetSystemType("UnityEngine", "RectTransform"));
 
     RunMethod(_maxCombo, "SetInsetAndSizeFromParentEdge", 0, -2.0f, 17.0f);
     RunMethod(_highScore, "SetInsetAndSizeFromParentEdge", 0, 15.0f, 17.0f);
     RunMethod(_maxRank, "SetInsetAndSizeFromParentEdge", 0, 32.0f, 16.0f);
-    _playCount = *RunMethod("UnityEngine", "Object", "Instantiate", _maxRank, *GetPropertyValue(StatsContainer, "transform"));
-    auto _playCountRect = *RunMethod(_playCount, "GetComponent", createcsstr("RectTransform"));
+    //_playCount = *RunMethod("UnityEngine", "Object", "Instantiate", _maxRank, *GetPropertyValue(StatsContainer, "transform"));
+    //auto _playCountRect = *RunMethod(_playCount, "GetComponent", GetSystemType("UnityEngine", "RectTransform);
     //RunMethod(_playCountRect, "SetInsetAndSizeFromParentEdge", 0, 48.0f, 16.0f);
 }
 
