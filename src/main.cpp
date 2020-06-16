@@ -52,7 +52,7 @@ MAKE_HOOK_OFFSETLESS(StandardLevelDetailView_RefreshContent, void, Il2CppObject*
     RunMethod(_maxCombo, "SetInsetAndSizeFromParentEdge", 0, -2.0f, 17.0f);
     RunMethod(_highScore, "SetInsetAndSizeFromParentEdge", 0, 15.0f, 17.0f);
     RunMethod(_maxRank, "SetInsetAndSizeFromParentEdge", 0, 32.0f, 16.0f);
-    _playCount = *RunMethod("UnityEngine", "Object", "Instantiate", MaxRankGameObj, *GetPropertyValue(StatsContainer, "transform"));
+    _playCount = *RunMethod("UnityEngine", "Object", "Instantiate", _maxRank, *GetPropertyValue(StatsContainer, "transform"));
     auto _playCountRect = *RunMethod(_playCount, "GetComponent", createcsstr("RectTransform"));
     //RunMethod(_playCountRect, "SetInsetAndSizeFromParentEdge", 0, 48.0f, 16.0f);
 }
